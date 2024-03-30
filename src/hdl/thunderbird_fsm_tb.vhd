@@ -58,27 +58,62 @@ architecture test_bench of thunderbird_fsm_tb is
 	
 	component thunderbird_fsm is 
 	  port(
-		
+		i_clk, i_reset  : in    std_logic;
+        i_left, i_right : in    std_logic;
+        o_lights_L      : out   std_logic_vector(2 downto 0);
+        o_lights_R      : out   std_logic_vector(2 downto 0)
+
 	  );
 	end component thunderbird_fsm;
 
 	-- test I/O signals
-	
+	signal w_clk, w_reset : std_logic := '0';
+	signal w_left, w_right : std_logic := '0';
 	-- constants
-	
+	constant k_clk_period : time := 10 ns;
+	signal w_thunderbird : std_logic_vector(7 downto 0) := "00000000";
 	
 begin
 	-- PORT MAPS ----------------------------------------
-	
+	 uut: thunderbird_fsm port map (
+             i_reset => w_reset,
+             i_clk => w_clk,
+             i_left => w_left,
+             i_right => w_right,
+             o_lights_L(0) => w_thunderbird(5),
+             o_lights_L(1) => w_thunderbird(6),
+             o_lights_L(2) => w_thunderbird(7),
+             o_lights_R(0) => w_thunderbird(2),
+             o_lights_R(1) => w_thunderbird(3),
+             o_lights_R(2) => w_thunderbird(4)
+           );
 	-----------------------------------------------------
 	
 	-- PROCESSES ----------------------------------------	
     -- Clock process ------------------------------------
-    
+    clk_proc : process
+        begin
+            w_clk <= '0';
+            wait for k_clk_period/2;
+            w_clk <= '1';
+            wait for k_clk_period/2;
+        end process;
 	-----------------------------------------------------
 	
 	-- Test Plan Process --------------------------------
-	
+	sim_proc: process
+        begin
+            -- sequential timing        
+            w_reset <= '1';
+            wait for k_clk_period*1;
+              assert w_thunderbird = "00000000" report "bad reset" severity failure;
+            
+            w_reset <= '0';
+            wait for k_clk_period*1;
+            
+            wait;
+        end process;
+        ----------------------------------------------------------------
 	-----------------------------------------------------	
 	
 end test_bench;
