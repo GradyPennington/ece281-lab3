@@ -104,15 +104,17 @@ architecture thunderbird_fsm_arch of thunderbird_fsm is
 begin
 
 	-- CONCURRENT STATEMENTS --------------------------------------------------------	
-	f_Q_next(0) <= (not(f_Q(0)) and not(f_Q(1)) and not(f_Q(2)) and i_left and not(i_right)) or 
+	f_Q_next(2) <= (not(f_Q(0)) and not(f_Q(1)) and not(f_Q(2)) and i_left and not(i_right)) or 
 	               (not(f_Q(0)) and not(f_Q(1)) and not(f_Q(2)) and i_left and i_right) or
 	               (not(f_Q(0)) and f_Q(1) and not(f_Q(2))) or
 	               (f_Q(0) and f_Q(1) and not(f_Q(2)));
+	               
 	f_Q_next(1) <= (not(f_Q(0)) and not(f_Q(1)) and not(f_Q(2)) and not(i_left) and i_right) or
 	               (not(f_Q(0)) and f_Q(1) and not(f_Q(2))) or
 	               (f_Q(0) and not(f_Q(1)) and f_Q(2)) or
 	               (f_Q(0) and f_Q(1) and not(f_Q(2)));
-	f_Q_next(2) <= (not(f_Q(0)) and not(f_Q(1)) and not(f_Q(2)) and i_left and not(i_right)) or
+	               
+	f_Q_next(0) <= (not(f_Q(0)) and not(f_Q(1)) and not(f_Q(2)) and i_left and not(i_right)) or
 	               (not(f_Q(0)) and f_Q(1) and f_Q(2)) or
 	               (f_Q(0) and not(f_Q(1)) and f_Q(2)) or
 	               (f_Q(0) and f_Q(1) and not(f_Q(2)));
