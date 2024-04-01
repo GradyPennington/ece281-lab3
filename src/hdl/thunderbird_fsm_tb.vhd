@@ -115,24 +115,40 @@ begin
             w_left <= '1';
             wait for k_clk_period*1;
             assert w_lights_L = "001" report "bad LA" severity failure;
-            w_left <= '0';
             wait for k_clk_period*1;
             assert w_lights_L = "011" report "bad LB" severity failure;
             wait for k_clk_period*1;
             assert w_lights_L = "111" report "bad LC" severity failure;
             wait for k_clk_period*1;
             assert w_lights_L = "000" report "bad reset" severity failure;
+            wait for k_clk_period*1;
+                        assert w_lights_L = "001" report "bad LA" severity failure;
+                        wait for k_clk_period*1;
+                        w_left <= '0';
+                        assert w_lights_L = "011" report "bad LB" severity failure;
+                        wait for k_clk_period*1;
+                        assert w_lights_L = "111" report "bad LC" severity failure;
+                        wait for k_clk_period*1;
+                        assert w_lights_L = "000" report "bad reset" severity failure;
             
             w_right <= '1';
                         wait for k_clk_period*1;
                         assert w_lights_R = "100" report "bad RA" severity failure;
-                        w_right <= '0';
                         wait for k_clk_period*1;
                         assert w_lights_R = "110" report "bad RB" severity failure;
                         wait for k_clk_period*1;
                         assert w_lights_R = "111" report "bad RC" severity failure;
                         wait for k_clk_period*1;
                         assert w_lights_L = "000" report "bad reset" severity failure;
+                        wait for k_clk_period*1;
+                                                assert w_lights_R = "100" report "bad RA" severity failure;
+                                                wait for k_clk_period*1;
+                                                w_right <= '0';
+                                                assert w_lights_R = "110" report "bad RB" severity failure;
+                                                wait for k_clk_period*1;
+                                                assert w_lights_R = "111" report "bad RC" severity failure;
+                                                wait for k_clk_period*1;
+                                                assert w_lights_L = "000" report "bad reset" severity failure;
                         
            w_right <= '1';
            w_left <= '1';
@@ -142,6 +158,8 @@ begin
            assert w_lights_R = "000" and w_lights_L = "000" report "bad hazards off" severity failure;
            w_right <= '0';
            w_left <= '0';
+           
+       
            
             wait;
         end process;
