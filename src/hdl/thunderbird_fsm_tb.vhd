@@ -111,6 +111,15 @@ begin
             w_reset <= '0';
             wait for k_clk_period*1;
             
+            w_left <= '1';
+            wait for k_clk_period*1;
+            assert w_thunderbird = "00000100" report "bad left0" severity failure;
+            wait for k_clk_period*1;
+            assert w_thunderbird = "00000110" report "bad left1" severity failure;
+            wait for k_clk_period*1;
+            assert w_thunderbird = "00000111" report "bad left2" severity failure;
+            
+            
             wait;
         end process;
         ----------------------------------------------------------------
