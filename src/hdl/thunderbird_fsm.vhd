@@ -131,7 +131,7 @@ begin
 	o_lights_R(0) <= (not(f_Q(0)) and not(f_Q(1)) and f_Q(2)) or
 	                 (f_Q(0) and not(f_Q(1)) and not(f_Q(2)));
 	
-	o_lights_L(2) <= (not(f_Q(0)) and not(f_Q(1)) and f_Q(0)) or
+	o_lights_L(2) <= (not(f_Q(0)) and not(f_Q(1)) and f_Q(2)) or
 	                 (f_Q(0) and not(f_Q(1)) and f_Q(2)) or
 	                 (f_Q(0) and f_Q(1) and not(f_Q(2))) or
 	                 (f_Q(0) and f_Q(1) and f_Q(2));

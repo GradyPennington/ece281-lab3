@@ -124,7 +124,7 @@ thunderbird_inst : thunderbird_fsm port map (
                );
                
 clkdiv_inst : clock_divider 		--instantiation of clock_divider to take 
-                       generic map ( k_DIV => 2 ) -- 1 Hz clock from 100 MHz
+                       generic map ( k_DIV => 12500000 ) -- 1 Hz clock from 100 MHz
                        port map (                          
                            i_clk   => clk,
                            i_reset => btnL,
