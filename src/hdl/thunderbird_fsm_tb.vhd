@@ -110,7 +110,7 @@ begin
             
             w_reset <= '0';
         
-            
+            wait for k_clk_period*1;
             
             wait;
         end process;
