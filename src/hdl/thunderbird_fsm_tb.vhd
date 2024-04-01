@@ -71,8 +71,8 @@ architecture test_bench of thunderbird_fsm_tb is
 	signal w_left, w_right : std_logic := '0';
 	-- constants
 	constant k_clk_period : time := 10 ns;
-	signal w_thunderbird : std_logic_vector(7 downto 0) := "00000000";
-	
+	signal w_lights_L : std_logic_vector(2 downto 0);
+	signal w_lights_R : std_logic_vector(2 downto 0);
 begin
 	-- PORT MAPS ----------------------------------------
 	 uut: thunderbird_fsm port map (
@@ -80,12 +80,12 @@ begin
              i_clk => w_clk,
              i_left => w_left,
              i_right => w_right,
-             o_lights_L(2) => w_thunderbird(5),
-             o_lights_L(1) => w_thunderbird(6),
-             o_lights_L(0) => w_thunderbird(7),
-             o_lights_R(2) => w_thunderbird(2),
-             o_lights_R(1) => w_thunderbird(3),
-             o_lights_R(0) => w_thunderbird(4)
+             o_lights_L(2) => w_lights_L(0),
+             o_lights_L(1) => w_lights_L(1),
+             o_lights_L(0) => w_lights_L(2),
+             o_lights_R(2) => w_lights_R(2),
+             o_lights_R(1) => w_lights_R(1),
+             o_lights_R(0) => w_lights_R(0)
            );
 	-----------------------------------------------------
 	
@@ -106,12 +106,43 @@ begin
             -- sequential timing        
             w_reset <= '1';
             wait for k_clk_period*1;
-              assert w_thunderbird = "00000000" report "bad reset" severity failure;
+              assert w_lights_L = "000" and w_lights_R = "000" report "bad reset" severity failure;
             
             w_reset <= '0';
         
             wait for k_clk_period*1;
             
+            w_left <= '1';
+            wait for k_clk_period*1;
+            assert w_lights_L = "001" report "bad LA" severity failure;
+            w_left <= '0';
+            wait for k_clk_period*1;
+            assert w_lights_L = "011" report "bad LB" severity failure;
+            wait for k_clk_period*1;
+            assert w_lights_L = "111" report "bad LC" severity failure;
+            wait for k_clk_period*1;
+            assert w_lights_L = "000" report "bad reset" severity failure;
+            
+            w_right <= '1';
+                        wait for k_clk_period*1;
+                        assert w_lights_R = "100" report "bad RA" severity failure;
+                        w_right <= '0';
+                        wait for k_clk_period*1;
+                        assert w_lights_R = "110" report "bad RB" severity failure;
+                        wait for k_clk_period*1;
+                        assert w_lights_R = "111" report "bad RC" severity failure;
+                        wait for k_clk_period*1;
+                        assert w_lights_L = "000" report "bad reset" severity failure;
+                        
+           w_right <= '1';
+           w_left <= '1';
+           wait for k_clk_period*1;
+           assert w_lights_R = "111" and w_lights_L = "111" report "bad hazards on" severity failure;
+           wait for k_clk_period*1;
+           assert w_lights_R = "000" and w_lights_L = "000" report "bad hazards off" severity failure;
+           w_right <= '0';
+           w_left <= '0';
+           
             wait;
         end process;
         ----------------------------------------------------------------
